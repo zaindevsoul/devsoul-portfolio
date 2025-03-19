@@ -24,8 +24,8 @@ app.post("/api/contact", async (req, res) => {
   const { error } = contactSchema.validate(req.body);
   if (error) {
     return res
-      .status(400)
-      .json({ status: 400, message: error.details[0].message });
+      .status(422)
+      .json({ status: 422, message: error.details[0].message });
   }
 
   const { firstname, lastname, subject, message, recaptchaToken } = req.body;
