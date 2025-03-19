@@ -11,8 +11,8 @@ const PORT = process.env.PORT || 5000;
 
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://portfolio.devsoul.net/"],
-    methods: "GET,POST,PUT,DELETE",
+    origin: "*",
+    methods: "GET,POST,PUT,DELETE,OPTIONS",
     allowedHeaders: "Content-Type,Authorization",
   })
 );
@@ -28,6 +28,7 @@ const contactSchema = Joi.object({
 });
 
 app.post("/api/contact", async (req, res) => {
+  console.log("Request body:", req.body);
   const { error } = contactSchema.validate(req.body);
   if (error) {
     return res
@@ -101,6 +102,6 @@ app.post("/api/contact", async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server running on port ${PORT}`);
 });
