@@ -20,15 +20,6 @@ const contactSchema = Joi.object({
   recaptchaToken: Joi.string().required(),
 });
 
-const getClientIp = (req) => {
-  return (
-    req.headers["x-forwarded-for"]?.split(",")[0] ||
-    req.connection.remoteAddress ||
-    req.ip
-  );
-};
-const userIp = getClientIp(req);
-
 app.post("/api/contact", async (req, res) => {
   const { error } = contactSchema.validate(req.body);
   if (error) {
@@ -48,7 +39,10 @@ app.post("/api/contact", async (req, res) => {
         params: {
           secret: process.env.RECAPTCHA_SECRET_KEY,
           response: recaptchaToken,
-          remoteip: userIp,
+          remoteip:
+            req.headers["x-forwarded-for"]?.split(",")[0] ||
+            req.socket.remoteAddress ||
+            req.ip,
         },
       }
     );
