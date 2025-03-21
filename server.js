@@ -27,6 +27,8 @@ const contactSchema = Joi.object({
   recaptchaToken: Joi.string().required(),
 });
 
+app.use("/contactUs", express.static("index.html"));
+
 app.post("/api/contact", async (req, res) => {
   console.log("Request body:", req.body);
   const { error } = contactSchema.validate(req.body);
